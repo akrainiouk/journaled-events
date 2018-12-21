@@ -63,3 +63,27 @@ This should be the case for any RDB, for some document based backends (e.g. Coll
 
 ## First sketch of an API
 
+```java
+    void send(String topic, Message message);
+    Future<Message> receive(String topic, Position pos);
+
+    Closeable subscribe(String topic, Position pos, Consumer<Message> callback);
+
+    interface Message {
+        byte[] getPayload();
+        Position getPosition();
+        Map<String, String> getProperties();
+    }
+
+    Message newMessage(byte[] payload, Map<String, String> props);
+
+    Position positionFromString(String out);
+    String positionToString(Position in);
+
+    interface Seek {
+        Seek earliest = new Seek() {};
+        Seek latest = new Seek() {};
+    }
+
+    interface Position extends Seek {};
+```
